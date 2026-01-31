@@ -1,26 +1,35 @@
 <?php
 
-$url = getenv("MYSQL_URL");
+$mysqlUrl = getenv("MYSQL_URL");
 
-if (!$url) {
+if (!$mysqlUrl) {
     echo json_encode([
         "success" => false,
-        "message" => "MYSQL_URL not set"
+        "message" => "MYSQL_URL environment variable not set"
     ]);
     exit;
 }
 
-$db = parse_url($url);
+$parts = parse_url($mysqlUrl);
 
-$host = $db["host"];
-$port = $db["port"] ?? 3306;
-$user = $db["user"];
-$pass = $db["pass"];
-$name = ltrim($db["path"], "/");
+if (!isset($parts["host"], $parts["user"], $parts["pass"], $parts["path"])) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid MYSQL_URL format",
+        "debug" => $mysqlUrl
+    ]);
+    exit;
+}
+
+$host = $parts["host"];
+$user = $parts["user"];
+$pass = $parts["pass"];
+$port = $parts["port"] ?? 3306;
+$dbname = ltrim($parts["path"], "/");
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host;port=$port;dbname=$name;charset=utf8mb4",
+        "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4",
         $user,
         $pass,
         [
