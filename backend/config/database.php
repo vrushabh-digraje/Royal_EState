@@ -1,35 +1,22 @@
 <?php
 
-$mysqlUrl = getenv("MYSQL_URL");
+$host = getenv("DB_HOST");
+$port = getenv("DB_PORT") ?: 5432;
+$db   = getenv("DB_NAME");
+$user = getenv("DB_USER");
+$pass = getenv("DB_PASS");
 
-if (!$mysqlUrl) {
+if (!$host || !$db || !$user || !$pass) {
     echo json_encode([
         "success" => false,
-        "message" => "MYSQL_URL environment variable not set"
+        "message" => "Database environment variables missing"
     ]);
     exit;
 }
-
-$parts = parse_url($mysqlUrl);
-
-if (!isset($parts["host"], $parts["user"], $parts["pass"], $parts["path"])) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Invalid MYSQL_URL format",
-        "debug" => $mysqlUrl
-    ]);
-    exit;
-}
-
-$host = $parts["host"];
-$user = $parts["user"];
-$pass = $parts["pass"];
-$port = $parts["port"] ?? 3306;
-$dbname = ltrim($parts["path"], "/");
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4",
+        "pgsql:host=$host;port=$port;dbname=$db",
         $user,
         $pass,
         [
