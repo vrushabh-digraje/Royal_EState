@@ -1,8 +1,5 @@
 <?php
 
-ini_set('display_errors', 0);
-error_reporting(0);
-
 $databaseUrl = getenv("DATABASE_URL");
 
 if (!$databaseUrl) {
@@ -19,11 +16,11 @@ $host = $db["host"];
 $port = $db["port"] ?? 5432;
 $user = $db["user"];
 $pass = $db["pass"];
-$dbname = ltrim($db["path"], "/");
+$name = ltrim($db["path"], "/");
 
 try {
     $pdo = new PDO(
-        "pgsql:host=$host;port=$port;dbname=$dbname",
+        "pgsql:host=$host;port=$port;dbname=$name",
         $user,
         $pass,
         [
@@ -34,7 +31,8 @@ try {
 } catch (PDOException $e) {
     echo json_encode([
         "success" => false,
-        "message" => "Database connection failed"
+        "message" => "Database connection failed",
+        "error" => $e->getMessage()
     ]);
     exit;
 }
