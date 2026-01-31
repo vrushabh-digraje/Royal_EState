@@ -1,22 +1,29 @@
 <?php
 
-$host = getenv("DB_HOST");
-$port = getenv("DB_PORT") ?: 5432;
-$db   = getenv("DB_NAME");
-$user = getenv("DB_USER");
-$pass = getenv("DB_PASS");
+ini_set('display_errors', 0);
+error_reporting(0);
 
-if (!$host || !$db || !$user || !$pass) {
+$databaseUrl = getenv("DATABASE_URL");
+
+if (!$databaseUrl) {
     echo json_encode([
         "success" => false,
-        "message" => "Database environment variables missing"
+        "message" => "DATABASE_URL not set"
     ]);
     exit;
 }
 
+$db = parse_url($databaseUrl);
+
+$host = $db["host"];
+$port = $db["port"] ?? 5432;
+$user = $db["user"];
+$pass = $db["pass"];
+$dbname = ltrim($db["path"], "/");
+
 try {
     $pdo = new PDO(
-        "pgsql:host=$host;port=$port;dbname=$db",
+        "pgsql:host=$host;port=$port;dbname=$dbname",
         $user,
         $pass,
         [
@@ -27,8 +34,7 @@ try {
 } catch (PDOException $e) {
     echo json_encode([
         "success" => false,
-        "message" => "Database connection failed",
-        "error" => $e->getMessage()
+        "message" => "Database connection failed"
     ]);
     exit;
 }
