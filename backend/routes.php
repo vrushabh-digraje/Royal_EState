@@ -66,10 +66,22 @@ if ($uri === "/register" && $method === "POST") {
             "message" => "Account created successfully"
         ]);
     } catch (PDOException $e) {
+
+    // MySQL duplicate email error code = 1062
+    if ($e->getCode() == 23000) {
         echo json_encode([
             "success" => false,
             "message" => "Email already exists"
         ]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "message" => "Registration failed",
+            "error" => $e->getMessage()
+        ]);
+    }
+}
+
     }
     exit;
 }
