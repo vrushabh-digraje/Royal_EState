@@ -27,10 +27,11 @@ $uri = str_replace("/api", "", $uri);
 if ($uri === "/test" && $method === "GET") {
     echo json_encode([
         "success" => true,
-        "message" => "API working fine 🚀"
+        "message" => "API working on Render"
     ]);
     exit;
 }
+
 
 /* ======================
    REGISTER
