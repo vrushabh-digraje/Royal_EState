@@ -1,13 +1,22 @@
+import img_1 from "../../assets/Images/image_1.jpg"
+import img_2 from "../../assets/Images/image_2.jpg"
+import img_3 from "../../assets/Images/image_3.jpg"
+import img_4 from "../../assets/Images/image_4.jpg"
+import img_5 from "../../assets/Images/image_5.jpg"
+import img_6 from "../../assets/Images/image_6.jpg"
+import img_7 from "../../assets/Images/image_7.jpg"
+import img_8 from "../../assets/Images/image_8.jpg"
+
 
 const blogs = [
-  { id: 1, img: "/src/assets/Images/image_1.jpg" },
-  { id: 2, img: "/src/assets/Images/image_2.jpg" },
-  { id: 3, img: "/src/assets/Images/image_3.jpg" },
-  { id: 4, img: "/src/assets/Images/image_4.jpg" },
-  { id: 5, img: "/src/assets/Images/image_5.jpg" },
-  { id: 6, img: "/src/assets/Images/image_6.jpg" },
-  { id: 7, img: "/src/assets/Images/image_7.jpg" },
-  { id: 8, img: "/src/assets/Images/image_8.jpg" }
+  { id: 1, img: img_1 },
+  { id: 2, img: img_2 },
+  { id: 3, img: img_3 },
+  { id: 4, img: img_4 },
+  { id: 5, img: img_5 },
+  { id: 6, img: img_6 },
+  { id: 7, img: img_7 },
+  { id: 8, img: img_8 }
 ];
 
 export default function BlogSection() {
